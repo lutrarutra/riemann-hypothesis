@@ -456,16 +456,6 @@ lemma weilMultiplier_mul_of_mem_maxCompact {E : Type} [Field E] [CMType E] [Weil
     Finset.prod_mul_distrib]
   ring
 
-/-- The maximal compact subgroup acts on data by substitution: for `k` in it, the coefficient
-`⟨ϱ(x) vac, ω(k) f⟩` is the multiplier of `k` times the coefficient `⟨ϱ(k⁻¹ x) vac, f⟩`. These
-coefficients are the values at `x` and `k⁻¹ x` of the functions underlying `ω(k) f` and `f`. -/
-lemma Space.dataInner_omega_of_mem_maxCompact {E : Type} [Field E] [CMType E] [WeilData E]
-    (V : Space E n s) {k : G E s} (hk : k ∈ maxCompact E s) (f : 𝒮 V) (x : n → 𝔸 E) :
-    V.dataInner (V.ϱ x V.vacElem) (V.ω k f) =
-      weilMultiplier k * V.dataInner (V.ϱ (k⁻¹.adeleMatrix *ᵥ x) V.vacElem) f := by
-  rw [← V.val_eq_dataInner_rho_vacElem, ← V.val_eq_dataInner_rho_vacElem]
-  exact weilRep_apply_of_vacuum_smul adelicAction k f (vacuumFn_mulVec_of_mem_maxCompact hk) x
-
 /-- Let `u = diag(γ, z)` be a block diagonal isometry of the form with signs `ε`, with `γ` on the
 positive and `z` on the negative coordinates. The real Weil representation of `u` acts on the Fock
 vector `polyVector ε P` of a polynomial `P` by `det z⁻¹` times the substitution

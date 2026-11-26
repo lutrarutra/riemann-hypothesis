@@ -120,12 +120,6 @@ theorem _root_.New.HeckeChar.isSplitting_iff :
   show χ.val x = υ.val x ^ k ↔ χ.val x * (υ.val ^ k) x = 1
   rw [ContinuousMonoidHom.pow_apply, mul_eq_one_iff_eq_inv, ← inv_pow, h_υ_inv x hx]
 
-/-- The character `ν` of `[U(1)]` with `ν(y / ȳ) = χ(y) υ(y) ^ k`, for a splitting character `χ` of
-rank `k`. The Weil representation `ω_{χ_S, χ_T}` is `pairWeil` at these characters for `χ_S` and
-`χ_T`. -/
-def _root_.New.HeckeChar.IsSplitting.autChar (h : χ.IsSplitting k) : AutChar E :=
-  (HeckeChar.isSplitting_iff.mp h).choose
-
 
 /-- The splitting character of `ν * ν'` at rank `k + l` is the product of those of `ν` at rank `k`
 and of `ν'` at rank `l`, as for an orthogonal sum of spaces. -/

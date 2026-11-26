@@ -780,40 +780,6 @@ lemma IsAdapted.slice_omega_vacElem {g : G E s} {t : GL p (𝔸 E)} (h_adapted :
   rw [← slice_zero, omega_rho, isMixedLaw_slice, hc, hc₀]
   simp
 
-/-- The mixed model as an integral. Let `g` be adapted to `t`, and for an adelic vector `y` write
-`g y = l a + ι w + k b`. There is `c ≠ 0` such that, for all `f` and `x`, the value `(ω(g) f)[x]`
-is `c` times the integral over `y` of the coefficient `⟨ϱ(y) vac, f⟩`, times
-`β (2 x + a) b * ‖vacuumFn (tᴴ (x + a))‖ ^ 2`, times the translate by `w` of the vacuum of `V₀`.
-Here `β` is the bicharacter of `adelicHeisenberg E 1`. The middle factor is the value at `x` of the
-translate by `l a + k b` of the function `‖vacuumFn (tᴴ ·)‖ ^ 2` in the Schrödinger model. -/
-lemma IsAdapted.slice_omega_eq_integral {g : G E s} {t : GL p (𝔸 E)}
-    (h_adapted : D.IsAdapted g t) :
-    ∃ c ≠ (0 : ℂ), ∀ (f : 𝒮 V) (x : p → 𝔸 E),
-      D.slice x (V.ω g f) = c • ∫ y : n → 𝔸 E,
-        (V.dataInner (V.ϱ y V.vacElem) f *
-          ((adelicHeisenberg E 1).β (x + (x + D.lCoord *ᵥ g.adeleMatrix *ᵥ y))
-            (D.kCoord *ᵥ g.adeleMatrix *ᵥ y) *
-            ‖vacuumFn (t.valᴴ *ᵥ (x + D.lCoord *ᵥ g.adeleMatrix *ᵥ y))‖ ^ 2)) •
-          V₀.ϱ (D.iCoord *ᵥ g.adeleMatrix *ᵥ y) V₀.vacElem ∂vacuumMeasure := by
-  -- By superposition it suffices to know the mixed model of the translates `ω(g) ϱ(y) vac`; it
-  -- comes from the law of the mixed model and the values at `ω(g) vac`.
-  obtain ⟨c, hc_ne, hc⟩ := h_adapted.slice_omega_vacElem
-  refine ⟨c, hc_ne, fun f x ↦ ?_⟩
-  have h_translate (y : n → 𝔸 E) : D.slice x (V.ω g (V.ϱ y V.vacElem)) =
-      (c * ((adelicHeisenberg E 1).β (x + (x + D.lCoord *ᵥ g.adeleMatrix *ᵥ y))
-        (D.kCoord *ᵥ g.adeleMatrix *ᵥ y) *
-        ‖vacuumFn (t.valᴴ *ᵥ (x + D.lCoord *ᵥ g.adeleMatrix *ᵥ y))‖ ^ 2)) •
-        V₀.ϱ (D.iCoord *ᵥ g.adeleMatrix *ᵥ y) V₀.vacElem := by
-    rw [omega_rho, isMixedLaw_slice, hc, map_smul, smul_smul, mul_left_comm]
-  calc D.slice x (V.ω g f)
-    _ = ∫ y : n → 𝔸 E, V.dataInner (V.ϱ y V.vacElem) f •
-          D.slice x (V.ω g (V.ϱ y V.vacElem)) ∂vacuumMeasure :=
-      V.map_eq_integral_dataInner f (D.slice x ∘L V.ω g)
-    _ = _ := by
-      rw [← MeasureTheory.integral_smul]
-      congr with y : 1
-      rw [h_translate, smul_smul, smul_smul, mul_left_comm]
-
 end RationalSums
 
 end New.Space.Splitting

@@ -318,46 +318,6 @@ variable {E : Type*} [Field E] [CMType E] [WeilData E]
 /-! ### Adapted elements -/
 
 variable {H} in
-open Exchange in
-omit [WeilData E] in
-/-- Let `H` be a Witt decomposition of `W` over `W₀`, and let `l`, `k`, `ι` be its two isotropic
-frames and its embedding of `W₀` in standard adelic coordinates (`H.lAdelic`, `H.kAdelic`,
-`H.iAdelic`). Let `t` be in GL_p(𝔸). Suppose two elements `g`, `g'` of the adelic unitary group
-`G E s` are both adapted to `H` and `t`: the matrices `g⁻¹ (l (t⁻¹)ᴴ, k t, ι)` and
-`g'⁻¹ (l (t⁻¹)ᴴ, k t, ι)` have orthonormal columns at every infinite place and integral entries at
-the finite places. Then `g⁻¹ * g'` lies in the maximal compact subgroup K_∞K₀. -/
-lemma IsAdapted.inv_mul_mem_maxCompact {g g' : G E s} {t : GL p (𝔸 E)} (hg : H.IsAdapted g t)
-    (hg' : H.IsAdapted g' t) : g⁻¹ * g' ∈ maxCompact E s := by
-  -- The frames `M`, `M'` of `g`, `g'` satisfy `M = (g⁻¹g') M'`. The Gram matrix `Q` of `M'` for the
-  -- standard form `ε` has `Q² = 1`, so `L = Q M'ᴴ ε` inverts the square matrix `M'`. Hence
-  -- `g⁻¹g' = M L` is a product of matrices that are unitary at infinity and integral.
-  let M' : Matrix n ((p ⊕ p) ⊕ n₀) (𝔸 E) := H.frameAt g' t
-  let Q : Matrix ((p ⊕ p) ⊕ n₀) ((p ⊕ p) ⊕ n₀) (𝔸 E) :=
-    fromBlocks (fromBlocks 0 1 1 0) 0 0 (stdForm E s₀)
-  let L : Matrix ((p ⊕ p) ⊕ n₀) n (𝔸 E) := Q * M'ᴴ * stdForm E s
-  have h_card : Fintype.card ((p ⊕ p) ⊕ n₀) = Fintype.card n := by simp +arith [H.card_eq]
-  have h_left : L * M' = 1 :=
-    calc L * M' = Q * (M'ᴴ * stdForm E s * M') := by simp only [L, Matrix.mul_assoc]
-      _ = Q * Q := by rw [H.gram_frameAt g' t]
-      _ = 1 := by simp [Q, fromBlocks_multiply, stdForm_mul_self]
-  have h_right : M' * L = 1 := (mul_eq_one_comm_of_card_eq _ _ _ h_card).1 h_left
-  have h_mat : (g⁻¹ * g').adeleMatrix = H.frameAt g t * L := by
-    rw [← Matrix.mul_one (g⁻¹ * g').adeleMatrix, ← h_right]
-    simp only [M', frameAt, ← Matrix.mul_assoc, ← G.adeleMatrix_mul, mul_inv_cancel_right]
-  have h_hyp : IsOrthoIntegral (fromBlocks 0 1 1 0 : Matrix (p ⊕ p) (p ⊕ p) (𝔸 E)) :=
-    ⟨fun w ↦ by simp [fromBlocks_map, fromBlocks_conjTranspose, fromBlocks_multiply],
-      by simp [Sum.forall, Matrix.one_apply, apply_ite]⟩
-  have h_star : IsOrthoIntegral M'ᴴ := by
-    obtain ⟨h_cols, h_int⟩ : IsOrthoIntegral M' := hg'
-    refine ⟨fun w ↦ ?_, fun i j ↦ star_mem_Ô (h_int j i)⟩
-    rw [conjTranspose_map (evalInf w) fun a : 𝔸 E ↦ rfl, conjTranspose_conjTranspose]
-    exact (mul_eq_one_comm_of_card_eq _ _ _ h_card).1 (h_cols w)
-  have h_L : IsOrthoIntegral L :=
-    ((h_hyp.block_diag (.of_stdForm s₀)).mul h_star).mul (.of_stdForm s)
-  rw [mem_maxCompact_iff_isOrthoIntegral_adeleMatrix, h_mat]
-  exact IsOrthoIntegral.mul hg h_L
-
-variable {H} in
 omit [WeilData E] in
 /-- An element adapted to the splitting `H` and the basis `γ` (its frame `H.frameAt h γ`, the matrix
 h⁻¹ (l (γ⁻¹)ᴴ, k γ, ι) built from the frames `H.lAdelic`, `H.kAdelic` and the embedding `H.iAdelic`,

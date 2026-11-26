@@ -321,10 +321,6 @@ abbrev QZChar.ker : Subgroup Γ := (toHom χ).ker
 /-- `QZChar.toHom χ` sends `g` to `χ g`, written multiplicatively. -/
 lemma QZChar.toHom_apply (g : Γ) : toHom χ g = Multiplicative.ofAdd ((χ : Γ → QZ) g) := rfl
 
-/-- An element `g` lies in the kernel of the character `χ` exactly when `χ g = 0`. -/
-lemma QZChar.mem_ker_iff {g : Γ} : g ∈ QZChar.ker χ ↔ (χ : Γ → QZ) g = 0 := by
-  rw [QZChar.ker, MonoidHom.mem_ker, toHom_apply, ofAdd_eq_one]
-
 /-- The kernel of a continuous character `χ : Γ → ℚ/ℤ` is closed in `Γ`. -/
 lemma QZChar.isClosed_ker : IsClosed (QZChar.ker χ : Set Γ) :=
   (isClosed_discrete {0}).preimage χ.prop.left

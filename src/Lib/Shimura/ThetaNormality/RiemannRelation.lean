@@ -92,16 +92,6 @@ instance : Module (𝓞 E) D.dualTorsion :=
 def IsRiemannTuple (D : PEL E) : Prop :=
   ∑ l : K, star (p l).1 * (p l).1 = D.paddedNorm ∧ ∑ l : K, star (p l).1 * (p l).2 = 0
 
-/-- For a Riemann tuple `p` with `p l = (a_l, b_l)`, `∑ ā_l a_l = D.paddedNorm`. -/
-lemma IsRiemannTuple.sum_star_fst_mul_fst {p : K → 𝓞 E × 𝓞 E} (hp : IsRiemannTuple p D) :
-    ∑ l : K, star (p l).1 * (p l).1 = D.paddedNorm :=
-  And.left hp
-
-/-- For a Riemann tuple `p` with `p l = (a_l, b_l)`, `∑ ā_l b_l = 0`. -/
-lemma IsRiemannTuple.sum_star_fst_mul_snd {p : K → 𝓞 E × 𝓞 E} (hp : IsRiemannTuple p D) :
-    ∑ l : K, star (p l).1 * (p l).2 = 0 :=
-  And.right hp
-
 /-- The family of coefficient pairs on two copies of the index set `K`: `(0, b_l)` on the first
 copy, where `k l = (a_l, b_l)`, and `p l` on the second. -/
 def doubledCoeffs (k : K → 𝓞 E × 𝓞 E) : K ⊕ K → 𝓞 E × 𝓞 E := Sum.elim (fun l ↦ (0, (k l).2)) p

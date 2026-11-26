@@ -91,15 +91,6 @@ section
 
 omit [Finite G]
 
-lemma IsIrreducibleChar.isChar (hf : IsIrreducibleChar f) : IsChar f := hf.left
-
-
-/-- For an irreducible character `f`, a class function `h` and `y : G`, the inner product of `f`
-with the translate `t ↦ h (t * y)`, times `f 1`, is `classInner f h * f y`. -/
-lemma IsIrreducibleChar.mul_classInner_translate (hf : IsIrreducibleChar f) (hh : IsClassFunction h)
-    (y : G) :
-    f 1 * classInner f (fun t : G ↦ h (t * y)) = classInner f h * f y :=
-  hf.right.right h hh y
 
 end
 

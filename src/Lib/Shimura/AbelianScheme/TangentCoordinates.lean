@@ -367,14 +367,6 @@ lemma IsLieChart.zero_landsIn {s : Spec B ⟶ S} {V : A.left.Opens} {z : ι → 
     {m : O → Matrix ι ι B} (h_lie : IsLieChart A s V z m) {φ : B ⟶ C} (ht : Spec.map φ ≫ s = t) :
     LandsIn (0 : mk t ⟶ A).left V := (h_lie.2 ht).1
 
-/-- For a chart at 0 over s with matrices m, the point t = Spec φ ≫ s, and a C-point y that is
-infinitesimal for a square-zero extension ψ: dz(a y) = φ(m(a)) dz(y) for a in O, where
-dz = `New.tangentCoords z`. -/
-lemma IsLieChart.tangentCoords_smul {s : Spec B ⟶ S} {V : A.left.Opens} {z : ι → Γ(A.left, V)}
-    {m : O → Matrix ι ι B} (h_lie : IsLieChart A s V z m) {φ : B ⟶ C} (ht : Spec.map φ ≫ s = t)
-    {ψ : C ⟶ C'} [IsSqZeroExt ψ] {y : mk t ⟶ A} (hy : IsInfinitesimal ψ y) (a : O) :
-    tangentCoords z (a • y) = (m a).map φ *ᵥ tangentCoords z y := ((h_lie.2 ht).2 hy).1 a
-
 /-- For a chart at 0 over s, the point t = Spec φ ≫ s, and C-points y, x that are infinitesimal
 for a square-zero extension ψ: dz(y + x) = dz(y) + dz(x), where dz = `New.tangentCoords z`. -/
 lemma IsLieChart.tangentCoords_add {s : Spec B ⟶ S} {V : A.left.Opens} {z : ι → Γ(A.left, V)}
@@ -508,14 +500,6 @@ lemma IsInfinitesimal.eq_zero_of_isUnit_and_nsmul_eq_zero_of_cast_eq_zero (hy : 
       (hm.smul_eq_zero.1 h_smul_zero)
   · have h_coords_zero : tangentCoords z (m • y) = 0 := by rw [h_dv, hm, zero_smul]
     exact h_lie.isEtaleChart.eq_zero_of_tangentCoords_eq_zero h_in (h_nsmul m) h_coords_zero
-
-/-- Let A → S be smooth of constant relative dimension, let t : Spec C → S factor through
-s : Spec B → S with B local, and let the C-point y of A vanish modulo the square-zero ideal ker ψ.
-If m is invertible in C, then my = 0 forces y = 0. -/
-lemma IsInfinitesimal.eq_zero_of_nsmul_eq_zero (hy : IsInfinitesimal ψ y) [IsSqZeroExt ψ] {g : ℕ}
-    (hd : SmoothOfRelativeDimension g A.hom) [IsLocalRing B] (a : mk t ⟶ mk s) {m : ℕ}
-    (hm : IsUnit (m : C)) (hmy : m • y = 0) : y = 0 :=
-  (hy.eq_zero_of_isUnit_and_nsmul_eq_zero_of_cast_eq_zero hd a m).left hm hmy
 
 /-- Let A → S be smooth of constant relative dimension, let t : Spec C → S factor through
 s : Spec B → S with B local, and let the C-point y of A vanish modulo the square-zero ideal ker ψ.

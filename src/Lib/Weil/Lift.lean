@@ -321,21 +321,6 @@ end Correspond
 
 variable {E : Type} [Field E] [NumberField E] {γ γ' : InfinitePlace E → ℤ}
   {l : InfinitePlace E → n → ℤ} {l' : InfinitePlace E → n' → ℤ} in
-/-- Let the doubled parameters `l` (for the signs `s`) and `l'` (for the signs `t`) correspond for
-the weights `γ`, `γ'`. For each infinite place w, let `P w` be a joint harmonic for the standard
-dual pair `.std t s (γ w) (-γ' w)` with parameters `l' w` and `-l w`. Then the product over w of the
-`P w`, with the variables of `P w` renamed to those of the place w, is a scalar multiple of
-`jointHarmonic γ γ' l l' s t`. -/
-theorem ParamsCorrespond.prod_eq_smul_jointHarmonic (h_corr : ParamsCorrespond γ γ' l l' s t)
-    (P : InfinitePlace E → MvPolynomial (n' × n) ℂ)
-    (hP : ∀ w : InfinitePlace E, IsJointHarmonic (.std t s (γ w) (-γ' w)) (l' w) (-l w) (P w)) :
-    ∃ c : ℂ, ∏ w : InfinitePlace E, rename (Prod.mk w) (P w) = c • jointHarmonic γ γ' l l' s t := by
-  have h_local (w : InfinitePlace E) : ∃ c : ℂ, P w = c • jointHarmonicAt γ γ' l l' s t w := by
-    obtain ⟨-, ⟨-, h_cols⟩, h_harm, h_rows, h_harm_swap⟩ := (hP w).isJointHighest
-    exact (isJointHarmonic_jointHarmonicAt (h_corr.isMatch w)).exists_eq_smul_of_row_weight h_harm
-      h_harm_swap h_rows h_cols
-  choose c hc using h_local
-  exact ⟨∏ w, c w, by simp [jointHarmonic, hc, map_smul, Finset.prod_smul]⟩
 
 /-- The real points of the two groups act through `Ω` on the real vector `v` of a datum
 `V.integrated v f` and leave its finite part `f` alone. -/

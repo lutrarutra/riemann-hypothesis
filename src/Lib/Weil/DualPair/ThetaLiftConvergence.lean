@@ -217,31 +217,6 @@ theorem eventually_exists_norm_omega_le_mul_height_pow (g₀ : G E s) :
     simpa only [inv_mul_cancel_right] using h_prod h_mem l h_factors
   exact ⟨γ, hγ, by grw [h_le, pow_right_comm, h_length]⟩
 
-omit [CMType E] in
-/-- The real Weil representation of a pair of ranks `n`, `n'`, which depends on `γ`, `γ'` only
-through a scalar of modulus one, has at `(y, y')` operator norm at most the norm of the vacuum times
-`(‖y‖ ‖y'‖) ^ (n n')`, where the norm of a real point is the product of the operator norms of its
-components at the infinite places. -/
-theorem _root_.New.norm_realPairWeil_le [NumberField E] (γ γ' : InfinitePlace E → ℤ)
-    (y : GInf E s) (y' : GInf E t) :
-    ‖realPairWeil γ γ' (y, y')‖ ≤ ‖(Fock.vacVector : PairFock E s t)‖ *
-      ((∏ τ : InfinitePlace E, ‖((y τ : GL n ℂ) : Matrix n n ℂ)‖) *
-        ∏ τ : InfinitePlace E, ‖((y' τ : GL n' ℂ) : Matrix n' n' ℂ)‖) ^
-          (Fintype.card n * Fintype.card n') := by
-  -- The determinants have modulus one, and at each place the multiplier is a minor of size at most
-  -- `n n'` of the matrix of `x ↦ y' x y⁻¹`.
-  have h_det : ‖realPairWeil γ γ' (y, y')‖ = ‖Fock.realWeil (pairHomInf (y, y'))‖ := by
-    change ‖(_ : ℂ) • Fock.realWeil (pairHomInf (y, y'))‖ = _
-    simp [norm_smul]
-  have h_multiplier : Fock.realMultiplier (pairHomInf (y, y')) =
-      ∏ τ : InfinitePlace E, Fock.realMultiplier (Fock.pairHom t s (y τ, y' τ)) :=
-    Fock.realMultiplier_blockU _
-  rw [h_det, ← Finset.prod_mul_distrib, ← Finset.prod_pow]
-  grw [Fock.norm_realWeil_le, h_multiplier, norm_prod]
-  gcongr with τ
-  grw [Fock.norm_realMultiplier_le, Fock.norm_pairHom_le, Fintype.card_prod,
-    mul_comm (Fintype.card n')]
-
 /-- Let `S` and `T` be hermitian spaces of ranks `n` and `n'`, let `a` and `b` be automorphic
 characters, and let `pairWeil S T a b` be the resulting Weil representation of the product of the
 two adelic unitary groups. For a compact set `Ξ` of adelic points there is a constant `C`, depending

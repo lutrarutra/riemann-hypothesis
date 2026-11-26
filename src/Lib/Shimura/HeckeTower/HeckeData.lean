@@ -361,25 +361,6 @@ section
 
 omit [CMBase E]
 
-/-- A safe place lies over a place of K₀ that satisfies `New.GaloisRep.IsSplitPrimeToDisc`. -/
-lemma IsSafe.isSplitPrimeToDisc_below {𝔑 : 𝓞 E} {w : FinPlace E} (h_safe : IsSafe 𝔑 w) :
-    GaloisRep.IsSplitPrimeToDisc (w.below (QuadField d₀)) :=
-  h_safe.1
-
-/-- If `w` is safe for 𝔑, then 𝔑 is prime to `w`. -/
-lemma IsSafe.level_notMem_asIdeal {𝔑 : 𝓞 E} {w : FinPlace E} (h_safe : IsSafe 𝔑 w) :
-    𝔑 ∉ w.asIdeal := by
-  obtain ⟨-, h_level, -⟩ := h_safe
-  exact h_level
-
-/-- If `w` is safe for 𝔑, then 𝔑 is prime to every place `v` above the conjugate of the place of
-K₀ below `w`. -/
-lemma IsSafe.level_notMem_asIdeal_of_below_eq_star {𝔑 : 𝓞 E} {w : FinPlace E} (h_safe : IsSafe 𝔑 w)
-    {v : FinPlace E} (hv : v.below (QuadField d₀) = star (w.below (QuadField d₀))) :
-    𝔑 ∉ v.asIdeal := by
-  obtain ⟨-, -, h_conj⟩ := h_safe
-  exact h_conj v hv
-
 end
 
 /-- For a subspace U of k_vⁿ (k_v the residue field) of dimension r, the scalar matrix of the
@@ -426,18 +407,6 @@ variable {n 𝔑}
 /-- The principal level consists of similitudes. -/
 lemma levelGU_le_GU {𝔑 : 𝓞 E} : levelGU n 𝔑 ≤ GU E n :=
   inf_le_left
-
-/-- An element of the Hecke algebra is supported on `GUPlus E n`. -/
-lemma heckeAlgebra.val_mem_spanOn {𝔑 : 𝓞 E} {k : Type*} [CommRing k] (f : heckeAlgebra n k 𝔑) :
-    f.val ∈ spanOn k (GUPlus E n) :=
-  f.property.1
-
-/-- An element of the Hecke algebra sends the vectors fixed by `levelGU n 𝔑` to vectors fixed by
-it, in every representation. -/
-lemma heckeAlgebra.val_mem_fixedToEigen {𝔑 : 𝓞 E} {k : Type*} [CommRing k]
-    (f : heckeAlgebra n k 𝔑) :
-    f.val ∈ fixedToEigen (levelGU n 𝔑) (MonoidHom.id (GL n (𝔸f E))) (levelGU n 𝔑) :=
-  f.property.2
 
 /-- For an element f = ∑ a_g [g] of the Hecke algebra of level 𝔑, the function ∑ a_g 1_{gK} on
 cosets of the principal level subgroup K. -/

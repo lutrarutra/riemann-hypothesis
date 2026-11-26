@@ -269,16 +269,6 @@ lemma isKilledBy_iff {ρ : Representation R Γ T} {s : Γ} {m : ℕ} {P : Polyno
       IsPotentiallyCrystalline ρ ∧ Polynomial.eval₂ (coeffEnd R T) (linearFrob ρ s m) P = 0 :=
   Iff.rfl
 
-/-- If `P` kills `(s, m)`, then `ρ` is potentially crystalline. -/
-lemma IsKilledBy.isPotentiallyCrystalline {ρ : Representation R Γ T} {s : Γ} {m : ℕ}
-    {P : Polynomial R} (h_killed : IsKilledBy ρ s m P) : IsPotentiallyCrystalline ρ :=
-  (isKilledBy_iff.mp h_killed).left
-
-/-- If `P` kills `(s, m)`, then `P` evaluated at `linearFrob ρ s m` through `coeffEnd` is zero. -/
-lemma IsKilledBy.eval₂_eq_zero {ρ : Representation R Γ T} {s : Γ} {m : ℕ} {P : Polynomial R}
-    (h_killed : IsKilledBy ρ s m P) : Polynomial.eval₂ (coeffEnd R T) (linearFrob ρ s m) P = 0 :=
-  (isKilledBy_iff.mp h_killed).right
-
 end Frobenius
 
 /-!
